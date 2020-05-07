@@ -67,19 +67,23 @@ export async function generateBranch(action: ActionInterface): Promise<void> {
 
     info(`Creating the ${action.branch} branch…`)
 
-    await switchToBaseBranch(action)
+    await switchToBaseBranch(action)]
+    info(`Creating the ${action.branch} ${action.repositoryPath} branch…`)
     await execute(`git checkout --orphan ${action.branch}`, action.workspace)
+    info(`checkout`)
     await execute(`git reset --hard`, action.workspace)
+    info(`reset`)
     await execute(
       `git commit --allow-empty -m "Initial ${action.branch} commit"`,
       action.workspace
     )
+    info(`commit`)
     await execute(
       `git push --force ${action.repositoryPath} ${action.branch}`,
       action.workspace
     )
+    info(`Push`)
     await execute(`git fetch`, action.workspace)
-
     info(`Created the ${action.branch} branch… 🔧`)
   } catch (error) {
     throw new Error(
